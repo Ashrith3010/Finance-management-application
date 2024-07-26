@@ -1,18 +1,35 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-
-const Header = () => (
-  <header>
-    <nav>
+[16:56] Badisa Likhitha Sri
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { startFetchTransactions, startDeleteTransaction } from '../redux/actions/transactionActions';
+ 
+const ExpenseList = () => {
+  const transactions = useSelector(state => state.transactions.transactions);
+  const dispatch = useDispatch();
+ 
+  useEffect(() => {
+    dispatch(startFetchTransactions());
+  }, [dispatch]);
+ 
+  const handleDeleteTransaction = (id) => {
+    dispatch(startDeleteTransaction(id));
+  };
+ 
+  return (
+    <div>
+      <h1>Expenses</h1>
       <ul>
-        <li><Link to="/dashboard">Dashboard</Link></li>
-        <li><Link to="/income">Income</Link></li>
-        <li><Link to="/expenses">Expenses</Link></li>
-        <li><Link to="/transaction">Add Transaction</Link></li>
-        <li><Link to="/login">Login</Link></li>
+        {transactions.filter(transaction => transaction.category === 'Expense').map(transaction => (
+          <li key={transaction.id}>
+            {transaction.description}: ${transaction.amount} on {transaction.date}
+            <button onClick={() => handleDeleteTransaction(transaction.id)}>Delete</button>
+          </li>
+        ))}
       </ul>
-    </nav>
-  </header>
-);
-
-export default Header;
+    </div>
+  );
+};
+ 
+export default ExpenseList;
+ 
+ 

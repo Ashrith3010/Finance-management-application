@@ -1,9 +1,15 @@
-// ExpenseList.js
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { startDeleteTransaction } from '../redux/actions/transactionActions';
 
 const ExpenseList = () => {
   const transactions = useSelector(state => state.transactions.transactions);
+  const dispatch = useDispatch();
+
+  const handleDeleteTransaction = (id) => {
+    dispatch(startDeleteTransaction(id));
+  };
+
   return (
     <div>
       <h1>Expenses</h1>
@@ -20,4 +26,3 @@ const ExpenseList = () => {
 };
 
 export default ExpenseList;
-

@@ -1,8 +1,19 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { startFetchTransactions, startDeleteTransaction } from '../redux/actions/transactionActions';
 
 const IncomeList = () => {
   const transactions = useSelector(state => state.transactions.transactions);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(startFetchTransactions());
+  }, [dispatch]);
+
+  const handleDeleteTransaction = (id) => {
+    dispatch(startDeleteTransaction(id));
+  };
+
   return (
     <div>
       <h1>Income</h1>

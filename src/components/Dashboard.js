@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import { addTransaction, deleteTransaction, editTransaction, setTransactions } from '../redux/actions/transactionActions';
 import { useNavigate } from 'react-router-dom';
-import { addTransaction, deleteTransaction } from '../redux/actions/transactionActions';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -12,6 +12,8 @@ const Dashboard = () => {
   const [amount, setAmount] = useState('');
   const [date, setDate] = useState('');
   const [error, setError] = useState(null);
+  const [editMode, setEditMode] = useState(false);
+  const [editId, setEditId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,10 +28,7 @@ const Dashboard = () => {
         const response = await axios.get('http://localhost:5001/api/transactions', {
           headers: { Authorization: `Bearer ${token}` }
         });
-        console.log(response.data); // Check the response structure
-        response.data.forEach(transaction => {
-          dispatch(addTransaction(transaction));
-        });
+        dispatch(setTransactions(response.data)); // Ensure you are using setTransactions action
       } catch (err) {
         setError('Failed to fetch transactions.');
       }
@@ -87,13 +86,72 @@ const Dashboard = () => {
     }
   };
 
+  const handleEditTransaction = async (id) => {
+    const transactionToEdit = transactions.find(transaction => transaction.id === id);
+    if (!transactionToEdit) {
+      setError('Transaction not found.');
+      return;
+    }
+
+    setDescription(transactionToEdit.description);
+    setCategory(transactionToEdit.category);
+    setAmount(transactionToEdit.amount);
+    setDate(transactionToEdit.date);
+
+    setEditMode(true);
+    setEditId(id);
+  };
+
+  const handleCancelEdit = () => {
+    setDescription('');
+    setCategory('Income');
+    setAmount('');
+    setDate('');
+    setEditMode(false);
+    setEditId(null);
+  };
+
+  const handleSaveEdit = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem('jwtToken');
+      if (!token) {
+        setError('No token found. Please log in.');
+        navigate('/login', { replace: true });
+        return;
+      }
+
+      const updatedTransaction = {
+        description,
+        category,
+        amount,
+        date
+      };
+
+      const response = await axios.put(`http://localhost:5001/api/transactions/${editId}`, updatedTransaction, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      dispatch(editTransaction(editId, response.data.transaction));
+      setDescription('');
+      setCategory('Income');
+      setAmount('');
+      setDate('');
+      setEditMode(false);
+      setEditId(null);
+
+    } catch (err) {
+      setError('Failed to edit transaction.');
+    }
+  };
+
   return (
     <div>
       <h1>Dashboard</h1>
       <button onClick={handleLogout}>Logout</button>
       {error && <p>{error}</p>}
       <h3>Add Transaction</h3>
-      <form onSubmit={handleAddTransaction}>
+      <form onSubmit={editMode ? handleSaveEdit : handleAddTransaction}>
         <div>
           <label>Description:</label>
           <input
@@ -131,35 +189,36 @@ const Dashboard = () => {
             required
           />
         </div>
-        <button type="submit">Add Transaction</button>
+        {editMode ? (
+          <div>
+            <button type="button" onClick={handleCancelEdit}>Cancel</button>
+            <button type="submit">Save</button>
+          </div>
+        ) : (
+          <button type="submit">Add Transaction</button>
+        )}
       </form>
 
       <h3>Income</h3>
       <ul>
-        {transactions.filter(transaction => transaction.category === 'Income').length > 0 ? (
-          transactions.filter(transaction => transaction.category === 'Income').map(transaction => (
-            <li key={transaction.id}>
-              {transaction.description}: ${transaction.amount} on {transaction.date}
-              <button onClick={() => handleDeleteTransaction(transaction.id)}>Delete</button>
-            </li>
-          ))
-        ) : (
-          <p>No income transactions available.</p>
-        )}
+        {transactions.filter(transaction => transaction.category === 'Income').map(transaction => (
+          <li key={transaction.id}>
+            {transaction.description}: ${transaction.amount} on {transaction.date}
+            <button onClick={() => handleDeleteTransaction(transaction.id)}>Delete</button>
+            <button onClick={() => handleEditTransaction(transaction.id)}>Edit</button>
+          </li>
+        ))}
       </ul>
 
       <h3>Expenses</h3>
       <ul>
-        {transactions.filter(transaction => transaction.category === 'Expense').length > 0 ? (
-          transactions.filter(transaction => transaction.category === 'Expense').map(transaction => (
-            <li key={transaction.id}>
-              {transaction.description}: ${transaction.amount} on {transaction.date}
-              <button onClick={() => handleDeleteTransaction(transaction.id)}>Delete</button>
-            </li>
-          ))
-        ) : (
-          <p>No expense transactions available.</p>
-        )}
+        {transactions.filter(transaction => transaction.category === 'Expense').map(transaction => (
+          <li key={transaction.id}>
+            {transaction.description}: ${transaction.amount} on {transaction.date}
+            <button onClick={() => handleDeleteTransaction(transaction.id)}>Delete</button>
+            <button onClick={() => handleEditTransaction(transaction.id)}>Edit</button>
+          </li>
+        ))}
       </ul>
     </div>
   );
