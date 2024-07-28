@@ -1,4 +1,3 @@
-[16:56] Badisa Likhitha Sri
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { startFetchTransactions, startDeleteTransaction } from '../redux/actions/transactionActions';

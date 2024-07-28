@@ -1,13 +1,15 @@
+// src/components/Login.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
- 
+import './styles/Login.css'; // Import the CSS file
+
 const Login = () => {
   const [usernameOrEmail, setUsernameOrEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
- 
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -16,19 +18,20 @@ const Login = () => {
         password
       });
       setMessage(response.data.message);
- 
-      // Store JWT token in localStorage
+
+      // Store JWT token and username in localStorage
       localStorage.setItem('jwtToken', response.data.token);
- 
+      localStorage.setItem('username', response.data.username); // Store the username
+
       // Redirect to dashboard on successful login
       navigate('/dashboard');
     } catch (error) {
       setMessage(error.response?.data?.message || 'Login failed');
     }
   };
- 
+
   return (
-    <div>
+    <div className="login-container">
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <div>
@@ -58,5 +61,5 @@ const Login = () => {
     </div>
   );
 };
- 
+
 export default Login;

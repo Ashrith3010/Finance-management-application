@@ -1,14 +1,14 @@
-// src/components/Home.js
-
 import React from 'react';
+import './styles/Home.css'; // Import Home-specific CSS
 
-function Home() {
+const Home = () => {
   return (
-    <div>
-      <h1>Home Page</h1>
-      <p>Welcome to the Home page!</p>
+    <div className="home-page-content">
+      <h2>Welcome to your Dashboard</h2>
+      <p>This is your personal finance management application.</p>
+      <p>Use the navigation buttons above to manage your finances.</p>
     </div>
   );
-}
+};
 
 export default Home;

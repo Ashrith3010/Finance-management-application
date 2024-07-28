@@ -1,0 +1,29 @@
+/* src/components/styles/IncomeList.css */
+.income-list {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.income-list h1 {
+  margin-top: 0;
+}
+
+.income-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.income-list ul li {
+  background-color: #f9f9f9;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.income-list ul li button {
+  margin-left: 10px;
+}
