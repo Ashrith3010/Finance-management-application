@@ -11,11 +11,9 @@ const authenticateToken = require('./middleware/authMiddleware'); // Import the 
 const app = express();
 const port = 5001;
 
-// Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
-// Ensure JWT_SECRET is set
 if (!process.env.JWT_SECRET) {
   console.error('JWT_SECRET environment variable is not set.');
   process.exit(1);
@@ -24,7 +22,6 @@ if (!process.env.JWT_SECRET) {
 const usersFilePath = path.join(__dirname, 'data', 'users.json');
 const transactionsFilePath = path.join(__dirname, 'data', 'transactions.json');
 
-// Function to read JSON files
 const readJSONFile = (filePath) => {
   try {
     const fileData = fs.readFileSync(filePath, 'utf8');
@@ -35,7 +32,6 @@ const readJSONFile = (filePath) => {
   }
 };
 
-// Function to write to JSON files
 const writeJSONFile = (filePath, data) => {
   try {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
@@ -44,7 +40,6 @@ const writeJSONFile = (filePath, data) => {
   }
 };
 
-// Register endpoint
 app.post('/api/register', (req, res) => {
   const { username, email, password } = req.body;
   const users = readJSONFile(usersFilePath);
@@ -60,7 +55,6 @@ app.post('/api/register', (req, res) => {
     return res.status(400).json({ message: 'Email already registered. Please log in.' });
   }
 
-  // Add new user and save
   const newUser = {
     id: (users.length + 1).toString(),
     username,
@@ -72,7 +66,6 @@ app.post('/api/register', (req, res) => {
   res.status(201).json({ message: 'User registered successfully. Please log in.' });
 });
 
-// Login endpoint
 app.post('/api/login', (req, res) => {
   const { usernameOrEmail, password } = req.body;
   const users = readJSONFile(usersFilePath);
@@ -89,14 +82,12 @@ app.post('/api/login', (req, res) => {
   }
 });
 
-// Get all transactions for a user
 app.get('/api/transactions', authenticateToken, (req, res) => {
   const transactions = readJSONFile(transactionsFilePath);
   const userTransactions = transactions.filter(transaction => transaction.userId === req.user.id);
   res.json(userTransactions);
 });
 
-// Get a specific transaction by ID
 app.get('/api/transactions/:id', authenticateToken, (req, res) => {
   const { id } = req.params;
   const transactions = readJSONFile(transactionsFilePath);
@@ -109,12 +100,10 @@ app.get('/api/transactions/:id', authenticateToken, (req, res) => {
   }
 });
 
-// Add a transaction endpoint
 app.post('/api/transactions', authenticateToken, (req, res) => {
   const { description, category, amount, date } = req.body;
   const transactions = readJSONFile(transactionsFilePath);
 
-  // Create a new transaction
   const newTransaction = {
     id: (transactions.length + 1).toString(),
     userId: req.user.id,
@@ -129,7 +118,6 @@ app.post('/api/transactions', authenticateToken, (req, res) => {
   res.status(201).json({ message: 'Transaction added successfully', transaction: newTransaction });
 });
 
-// Update a transaction endpoint
 app.put('/api/transactions/:id', authenticateToken, (req, res) => {
   const { id } = req.params;
   const { description, category, amount, date } = req.body;
@@ -153,7 +141,6 @@ app.put('/api/transactions/:id', authenticateToken, (req, res) => {
   res.status(200).json({ transaction: transactions[transactionIndex] });
 });
 
-// Delete a transaction endpoint
 app.delete('/api/transactions/:id', authenticateToken, (req, res) => {
   const { id } = req.params;
   const transactions = readJSONFile(transactionsFilePath);

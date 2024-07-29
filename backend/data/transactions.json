@@ -70,5 +70,29 @@
     "category": "Expense",
     "amount": "9500",
     "date": "2024-07-01"
+  },
+  {
+    "id": "10",
+    "userId": "7",
+    "description": "sam",
+    "category": "Income",
+    "amount": "2009",
+    "date": "2024-07-04"
+  },
+  {
+    "id": "11",
+    "userId": "7",
+    "description": "Hostel",
+    "category": "Expense",
+    "amount": "100000",
+    "date": "2024-07-19"
+  },
+  {
+    "id": "12",
+    "userId": "7",
+    "description": "sahith",
+    "category": "Expense",
+    "amount": "600",
+    "date": "2024-07-19"
   }
 ]

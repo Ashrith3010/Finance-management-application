@@ -1,4 +1,3 @@
-// src/redux/reducers/transactionReducer.js
 import {
   ADD_TRANSACTION,
   DELETE_TRANSACTION,

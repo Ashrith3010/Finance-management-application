@@ -1,4 +1,3 @@
-// src/components/TransactionHistory.js
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { startFetchTransactions, startDeleteTransaction } from '../redux/actions/transactionActions';

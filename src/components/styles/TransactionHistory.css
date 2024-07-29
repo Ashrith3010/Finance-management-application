@@ -1,51 +1,65 @@
-/* src/components/styles/TransactionHistory.css */
 .transaction-history {
   padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.filter-controls {
-  display: flex;
-  align-items: center;
+.transaction-history h1 {
+  margin-top: 0;
+  color: #333;
+}
+
+.transaction-history .filter-section {
   margin-bottom: 20px;
 }
 
-.filter-controls label {
+.transaction-history .filter-section label {
   margin-right: 10px;
 }
 
-.filter-controls select {
-  margin-right: 20px;
+.transaction-history .filter-section select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
-.transaction-table {
+.transaction-history table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.transaction-table th,
-.transaction-table td {
+.transaction-history th,
+.transaction-history td {
+  padding: 10px;
   border: 1px solid #ddd;
-  padding: 8px;
   text-align: left;
 }
 
-.transaction-table th {
-  background-color: #f2f2f2;
+.transaction-history th {
+  background-color: #f4f4f4;
 }
 
-.transaction-table tr:hover {
-  background-color: #f1f1f1;
+.transaction-history tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
 }
 
-.transaction-table button {
-  margin-left: 10px;
-  padding: 5px 10px;
+.transaction-history button {
   background-color: #ff4d4d;
   color: white;
   border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.transaction-table button:hover {
+.transaction-history button:hover {
   background-color: #ff1a1a;
+}
+
+.success-message {
+  color: green;
+  text-align: center;
+  margin-top: 15px;
 }

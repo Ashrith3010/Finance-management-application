@@ -1,4 +1,3 @@
-// src/components/Register.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -20,7 +19,7 @@ const Register = () => {
         password
       });
       setMessage(response.data.message);
-      setTimeout(() => navigate('/login'), 3000); // Redirect to login page after 3 seconds
+      setTimeout(() => navigate('/login'), 3000); 
     } catch (error) {
       setMessage(error.response?.data?.message || 'Registration failed');
     }

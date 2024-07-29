@@ -1,8 +1,7 @@
-// src/components/Login.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './styles/Login.css'; // Import the CSS file
+import './styles/Login.css';
 
 const Login = () => {
   const [usernameOrEmail, setUsernameOrEmail] = useState('');
@@ -19,11 +18,9 @@ const Login = () => {
       });
       setMessage(response.data.message);
 
-      // Store JWT token and username in localStorage
       localStorage.setItem('jwtToken', response.data.token);
-      localStorage.setItem('username', response.data.username); // Store the username
+      localStorage.setItem('username', response.data.username); 
 
-      // Redirect to dashboard on successful login
       navigate('/dashboard');
     } catch (error) {
       setMessage(error.response?.data?.message || 'Login failed');

@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { loadState, saveState } from './reducers/localStorage';  // Adjust the import path if needed
+import { loadState, saveState } from './reducers/localStorage';  
 import authReducer from './reducers/authReducer';
 import transactionReducer from './reducers/transactionReducer';
 import {thunk} from 'redux-thunk';

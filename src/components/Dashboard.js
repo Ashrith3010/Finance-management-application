@@ -1,5 +1,4 @@
-// src/components/Dashboard.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AddEditTransaction from './AddEditTransaction';
 import IncomeList from './IncomeList';
@@ -8,12 +7,19 @@ import Home from './Home';
 import './styles/Dashboard.css';
 
 const Dashboard = () => {
-  const [activePage, setActivePage] = useState('home');
+  const [activePage, setActivePage] = useState(() => {
+    return localStorage.getItem('activePage') || 'home';
+  });
   const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.setItem('activePage', activePage);
+  }, [activePage]);
 
   const handleLogout = () => {
     localStorage.removeItem('jwtToken');
-    localStorage.removeItem('username'); // Also clear the username on logout
+    localStorage.removeItem('username'); 
+    localStorage.removeItem('activePage');
     navigate('/login', { replace: true });
   };
 
@@ -32,7 +38,7 @@ const Dashboard = () => {
     }
   };
 
-  const username = localStorage.getItem('username'); // Retrieve username from local storage
+  const username = localStorage.getItem('username');
 
   return (
     <div className="dashboard">
@@ -42,7 +48,7 @@ const Dashboard = () => {
       </div>
       <div className="nav-buttons">
         <button onClick={() => setActivePage('home')}>Home</button>
-        <button onClick={() => setActivePage('transactions')}>Transactions</button>
+        <button onClick={() => setActivePage('transactions')}>Add Transactions</button>
         <button onClick={() => setActivePage('income')}>Income</button>
         <button onClick={() => setActivePage('expenses')}>Expenses</button>
       </div>

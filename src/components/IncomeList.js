@@ -1,9 +1,8 @@
-// src/components/IncomeList.js
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { startFetchTransactions, startDeleteTransaction } from '../redux/actions/transactionActions';
-import './styles/TransactionHistory.css'; // Reuse the same styles
+import './styles/TransactionHistory.css'; 
 
 const IncomeList = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -32,6 +31,8 @@ const IncomeList = () => {
     );
   });
 
+  const totalIncome = filteredTransactions.reduce((total, transaction) => total + parseFloat(transaction.amount), 0);
+
   const handleDelete = (id) => {
     if (window.confirm('Are you sure you want to delete this transaction?')) {
       dispatch(startDeleteTransaction(id));
@@ -58,6 +59,9 @@ const IncomeList = () => {
             </option>
           ))}
         </select>
+      </div>
+      <div className="total-amount">
+        <h3>Total Income: ${totalIncome.toFixed(2)}</h3>
       </div>
       <table className="transaction-table">
         <thead>

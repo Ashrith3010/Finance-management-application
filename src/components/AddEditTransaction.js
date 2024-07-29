@@ -1,4 +1,3 @@
-// src/components/AddEditTransaction.js
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -37,12 +36,12 @@ const AddEditTransaction = () => {
       if (confirmUpdate) {
         dispatch(startEditTransaction(id, formData));
         alert('Transaction updated successfully');
-        navigate('/dashboard'); // Redirect to dashboard after updating
+        navigate('/dashboard');
       }
     } else {
       dispatch(startAddTransaction({ ...formData, id: Date.now().toString() }));
       alert('Transaction added successfully');
-      navigate('/dashboard'); // Redirect to dashboard after adding
+      navigate('/dashboard'); 
     }
   };
 
