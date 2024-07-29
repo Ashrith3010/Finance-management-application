@@ -1,0 +1,51 @@
+/* src/components/styles/TransactionHistory.css */
+.transaction-history {
+  padding: 20px;
+}
+
+.filter-controls {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filter-controls label {
+  margin-right: 10px;
+}
+
+.filter-controls select {
+  margin-right: 20px;
+}
+
+.transaction-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.transaction-table th,
+.transaction-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.transaction-table th {
+  background-color: #f2f2f2;
+}
+
+.transaction-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.transaction-table button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.transaction-table button:hover {
+  background-color: #ff1a1a;
+}

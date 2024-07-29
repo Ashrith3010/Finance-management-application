@@ -1,11 +1,10 @@
-// src/components/IncomeList.js
+// src/components/TransactionHistory.js
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { startFetchTransactions, startDeleteTransaction } from '../redux/actions/transactionActions';
-import './styles/TransactionHistory.css'; // Reuse the same styles
+import './styles/TransactionHistory.css';
 
-const IncomeList = () => {
+const TransactionHistory = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
   const dispatch = useDispatch();
@@ -26,7 +25,6 @@ const IncomeList = () => {
   const filteredTransactions = transactions.filter(transaction => {
     const transactionDate = new Date(transaction.date);
     return (
-      transaction.category === 'Income' &&
       transactionDate.getFullYear() === parseInt(selectedYear) &&
       transactionDate.getMonth() + 1 === parseInt(selectedMonth)
     );
@@ -40,7 +38,7 @@ const IncomeList = () => {
 
   return (
     <div className="transaction-history">
-      <h2>Income List</h2>
+      <h2>Transaction History</h2>
       <div className="filter-controls">
         <label>Select Year: </label>
         <select value={selectedYear} onChange={handleYearChange}>
@@ -77,7 +75,6 @@ const IncomeList = () => {
               <td>{transaction.category}</td>
               <td>{transaction.date}</td>
               <td>
-                <Link to={`/edit/${transaction.id}`}>Edit</Link>
                 <button onClick={() => handleDelete(transaction.id)}>Delete</button>
               </td>
             </tr>
@@ -88,4 +85,4 @@ const IncomeList = () => {
   );
 };
 
-export default IncomeList;
+export default TransactionHistory;

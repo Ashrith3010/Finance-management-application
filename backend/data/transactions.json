@@ -25,14 +25,6 @@
   },
   {
     "id": "5",
-    "userId": "4",
-    "description": "shopping",
-    "category": "Expense",
-    "amount": "56",
-    "date": "2024-07-09"
-  },
-  {
-    "id": "5",
     "userId": "5",
     "description": "Amazon",
     "category": "Income",
@@ -56,19 +48,27 @@
     "date": "2024-07-19"
   },
   {
+    "id": "7",
+    "userId": "4",
+    "description": "salary",
+    "category": "Income",
+    "amount": "90000",
+    "date": "2024-07-19"
+  },
+  {
     "id": "8",
     "userId": "4",
     "description": "salary",
     "category": "Income",
-    "amount": "1000",
-    "date": "2024-07-31"
+    "amount": "5668",
+    "date": "2024-08-15"
   },
   {
     "id": "9",
     "userId": "4",
-    "description": "Phone repair",
+    "description": "hostel",
     "category": "Expense",
-    "amount": "20000",
-    "date": "2024-07-16"
+    "amount": "9500",
+    "date": "2024-07-01"
   }
 ]

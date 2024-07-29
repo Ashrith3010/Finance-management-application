@@ -1,29 +1,89 @@
 // src/components/ExpenseList.js
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { startDeleteTransaction } from '../redux/actions/transactionActions';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { startFetchTransactions, startDeleteTransaction } from '../redux/actions/transactionActions';
+import './styles/TransactionHistory.css'; // Reuse the same styles
 
-const ExpenseList = ({ onEdit }) => {
-  const transactions = useSelector(state => state.transactions.transactions);
+const ExpenseList = () => {
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
   const dispatch = useDispatch();
+  const transactions = useSelector((state) => state.transactions.transactions);
 
-  const handleDeleteTransaction = (id) => {
-    dispatch(startDeleteTransaction(id));
+  useEffect(() => {
+    dispatch(startFetchTransactions());
+  }, [dispatch]);
+
+  const handleYearChange = (e) => {
+    setSelectedYear(e.target.value);
+  };
+
+  const handleMonthChange = (e) => {
+    setSelectedMonth(e.target.value);
+  };
+
+  const filteredTransactions = transactions.filter(transaction => {
+    const transactionDate = new Date(transaction.date);
+    return (
+      transaction.category === 'Expense' &&
+      transactionDate.getFullYear() === parseInt(selectedYear) &&
+      transactionDate.getMonth() + 1 === parseInt(selectedMonth)
+    );
+  });
+
+  const handleDelete = (id) => {
+    if (window.confirm('Are you sure you want to delete this transaction?')) {
+      dispatch(startDeleteTransaction(id));
+    }
   };
 
   return (
-    <div>
-      <h1>Expense List</h1>
-      <ul>
-        {transactions.filter(transaction => transaction.category === 'Expense').map(transaction => (
-          <li key={transaction.id}>
-            {transaction.description}: ${transaction.amount} on {transaction.date}
-            <button onClick={() => handleDeleteTransaction(transaction.id)}>Delete</button>
-            <button onClick={() => onEdit(transaction.id)}>Edit</button>
-          </li>
-        ))}
-      </ul>
+    <div className="transaction-history">
+      <h2>Expense List</h2>
+      <div className="filter-controls">
+        <label>Select Year: </label>
+        <select value={selectedYear} onChange={handleYearChange}>
+          {[...new Array(10)].map((_, index) => (
+            <option key={index} value={new Date().getFullYear() - index}>
+              {new Date().getFullYear() - index}
+            </option>
+          ))}
+        </select>
+        <label>Select Month: </label>
+        <select value={selectedMonth} onChange={handleMonthChange}>
+          {[...new Array(12)].map((_, index) => (
+            <option key={index} value={index + 1}>
+              {new Date(0, index).toLocaleString('en-US', { month: 'long' })}
+            </option>
+          ))}
+        </select>
+      </div>
+      <table className="transaction-table">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Category</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredTransactions.map((transaction) => (
+            <tr key={transaction.id}>
+              <td>{transaction.description}</td>
+              <td>{transaction.amount}</td>
+              <td>{transaction.category}</td>
+              <td>{transaction.date}</td>
+              <td>
+                <Link to={`/edit/${transaction.id}`}>Edit</Link>
+                <button onClick={() => handleDelete(transaction.id)}>Delete</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

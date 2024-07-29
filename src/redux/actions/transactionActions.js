@@ -1,4 +1,4 @@
-
+// src/redux/actions/transactionActions.js
 import axios from 'axios';
 
 // Action Types
@@ -55,6 +55,36 @@ export const startDeleteTransaction = (id) => {
       dispatch(deleteTransaction(id));
     } catch (error) {
       console.error('Error deleting transaction:', error);
+    }
+  };
+};
+
+export const startAddTransaction = (transaction) => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem('jwtToken');
+      if (!token) throw new Error('No token found');
+      const response = await axios.post('http://localhost:5001/api/transactions', transaction, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      dispatch(addTransaction(response.data));
+    } catch (error) {
+      console.error('Error adding transaction:', error);
+    }
+  };
+};
+
+export const startEditTransaction = (id, updatedTransaction) => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem('jwtToken');
+      if (!token) throw new Error('No token found');
+      const response = await axios.put(`http://localhost:5001/api/transactions/${id}`, updatedTransaction, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      dispatch(editTransaction(id, response.data));
+    } catch (error) {
+      console.error('Error editing transaction:', error);
     }
   };
 };

@@ -18,12 +18,6 @@
     "password": "123456"
   },
   {
-    "id": "4",
-    "username": "likitha",
-    "email": "likitha@gmail.com",
-    "password": "123456"
-  },
-  {
     "id": "5",
     "username": "Likitha",
     "email": "LIkitha@gmail.com",
@@ -34,5 +28,11 @@
     "username": "qw",
     "email": "qw@gmail.com",
     "password": "123456"
+  },
+  {
+    "id": "6",
+    "username": "qwe",
+    "email": "qwe@gmail.com",
+    "password": "asdfghjkl"
   }
 ]
